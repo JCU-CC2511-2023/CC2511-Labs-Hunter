@@ -16,7 +16,7 @@ int main(void)
     // Loop for ever
     while (true) {
         gpio_put(LED_PIN, 1); // Switch on the LED 
-        sleep_ms(100);        // Wait for a while
+        sleep_ms(500);        // Wait for a while
         gpio_put(LED_PIN, 0); // Switch off the LED 
         sleep_ms(100);        // Wait for a while
     }
