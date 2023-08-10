@@ -1,23 +1,16 @@
 /**************************************************************
  * main.c
- * rev 1.0 10-Aug-2023 hkrug
+ * rev 1.0 10-Aug-2023 Hunter Kruger-Ilingworth
  * Lab3
  * ***********************************************************/
-
 #include "pico/stdlib.h"
 #include <stdbool.h>
 #include <stdio.h>
 
-
 int main(void) {
   // TODO - Initialise components and variables
   stdio_init_all(); //Bruce put this here, so im fairly sure its useful
-  printf("Hello, World!\r\n"); //test print
 
-
-   
-  
-  
   #define RED_LED 11
   gpio_init(RED_LED);
   gpio_set_dir(RED_LED, true);
@@ -30,11 +23,9 @@ int main(void) {
   gpio_init(BLUE_LED);
   gpio_set_dir(BLUE_LED, true);
 
-  while (true) {
-    // TODO - Repeated code here
-    //respond to user input by setting the GPIO pin high or low
+  while (true) {// Repeated code here within the while statement
     
-    int ch = getchar_timeout_us(0);
+    int ch = getchar_timeout_us(0);//respond to user input by setting the GPIO pin high or low
     if (ch != PICO_ERROR_TIMEOUT) {
     // Handle the various interesting values of ch here...
       if (ch == 'r'){
@@ -50,7 +41,6 @@ int main(void) {
         printf("BLUE TOGGLED\r\n");
         }  
     }
-    
     sleep_ms(20);//wait for another key press
   }
 }
