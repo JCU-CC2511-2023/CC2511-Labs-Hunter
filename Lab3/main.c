@@ -1,6 +1,6 @@
 /**************************************************************
  * main.c
- * rev 1.0 10-Aug-2023 Hunter Kruger-Ilingworthrgbrg
+ * rev 1.0 10-Aug-2023 Hunter Kruger-Ilingworth
  * Lab3
  * ***********************************************************/
 #include "pico/stdlib.h"
