@@ -33,6 +33,7 @@ int main(void) {
   CONTENT_OF(PADS_BANK0_GPIO25) = CONTENT_OF(PADS_BANK0_GPIO25) & ~(0x1 << 7); 
   //output disable, value = 0, bit = 7
   //moves the first bit seven steps and set it to zero
+  
   CONTENT_OF(PADS_BANK0_GPIO25) = CONTENT_OF(PADS_BANK0_GPIO25) | (0x1 << 6); 
   //inupt enable, value = 1, bit = 6
   //alternatively, CONTENT_OF(PADS_BANK0_GPIO25) = CONTENT_OF(PADS_BANK0_GPIO25) & (0x01 << 6); assuming the rest are 0
@@ -46,7 +47,7 @@ int main(void) {
   //sets the 25th bit (LED_PIN) to 1
 
   while (true) {
-    
+
     CONTENT_OF(GPIO_OUT_SET) = CONTENT_OF(GPIO_OUT_SET) | (0x1 << LED_PIN); 
 
     for(uint32_t i = 0 ; i < 8000000; i ++) {
@@ -58,5 +59,4 @@ int main(void) {
     __asm volatile( " nop " );} //wait
 
   }
-  
 }
