@@ -1,6 +1,6 @@
 /**************************************************************
  * main.c
- * rev 1.0 17-Aug-2023 hkrug
+ * rev 1.0 17-Aug-2023 Hunter Kruger-Ilingworth
  * Assignment1
  * ***********************************************************/
 
@@ -32,7 +32,6 @@ int main(void)
   gpio_set_dir(BLUE_LED, true); //recieving input
 
   //INITIALISE SWITCH PINS
-
   gpio_init(SW_1);
   gpio_set_dir(SW_1, false); //outputting signal
 
@@ -44,12 +43,11 @@ int main(void)
 
 
   while (true)
-  { // Repeated code here within the while statement
-
+  { 
     gpio_put(RED_LED, !gpio_get(SW_1));
     gpio_put(GREEN_LED, !gpio_get(SW_2));
     gpio_put(BLUE_LED, !gpio_get(SW_3));
 
-    sleep_ms(1); // program buffer
+    sleep_ms(1); // buffer time
   }
 }
