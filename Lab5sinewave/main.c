@@ -43,7 +43,7 @@ int main(void)
   uint Bslice_num = pwm_gpio_to_slice_num(BLUE_LED);
   pwm_set_wrap(Bslice_num, 255);              // Set the current PWM counter wrap value
   pwm_set_enabled(Bslice_num, true);          // enable PWM
-  pwm_set_gpio_level(GREEN_LED, 255); // assign initial PWM value
+  pwm_set_gpio_level(BLUE_LED, 255); // assign initial PWM value
 
   //create variables for graph function
   double PI = 3.1416;
@@ -61,9 +61,9 @@ int main(void)
       double green_value = pow(sin(Amp * duty_cycle + G_phase), 2) * 255.0;
       double blue_value = pow(sin(Amp * duty_cycle + B_phase), 2) * 255.0;
 
-      pwm_set_chan_level(Rslice_num, PWM_CHAN_A, (int)red_value);
-      pwm_set_chan_level(Gslice_num, PWM_CHAN_A, (int)green_value);
-      pwm_set_chan_level(Bslice_num, PWM_CHAN_A, (int)blue_value);
+      pwm_set_gpio_level(RED_LED, (int)red_value);
+      pwm_set_gpio_level(GREEN_LED, (int)green_value);
+      pwm_set_gpio_level(BLUE_LED, (int)blue_value);
 
       sleep_ms(20); // Delay to observe changes
     }   
