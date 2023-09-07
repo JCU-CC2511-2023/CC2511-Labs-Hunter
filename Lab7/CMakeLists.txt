@@ -15,6 +15,6 @@ add_executable(${projname}
         main.c
         )
 
-target_link_libraries(${projname} pico_stdlib hardware_uart)
+target_link_libraries(${projname} pico_stdlib hardware_pwm hardware_uart)
 pico_add_extra_outputs(${projname})
 
