@@ -102,6 +102,7 @@ void on_uart_rx()
 
         buffer[i] = ch; // save the character
         i++;            // increment the index
+        uart_puts(UART_ID, ch);
         break;
       }
 
@@ -162,29 +163,6 @@ void aio_init_uart()
   //uart_puts(UART_ID, "\nHello, uart interrupts\n");
 }
 
-void gui_update() {
-  //UI CODE
-  term_cls();
-  char colour_title_string[100];
-  char red_status_string[100];
-  char green_status_string[100];
-  char blue_status_string[100];
-  sprintf(colour_title_string, "\r\nCOLOURS: ");
-  sprintf(red_status_string, "\r\nRed: %hu ", red_level);
-  sprintf(green_status_string, "\r\nGreen: %hu", green_level);
-  sprintf(blue_status_string, "\r\nBlue: %hu \r\n", blue_level);
-
-  // Clear the terminal
-  term_cls();
-
-  // Output to terminal
-  uart_puts(UART_ID, colour_title_string);
-  uart_puts(UART_ID, red_status_string);
-  uart_puts(UART_ID, green_status_string);
-  uart_puts(UART_ID, blue_status_string);
-}
-
-
 int main(void)
 {
   stdio_init_all();
@@ -193,7 +171,6 @@ int main(void)
 
   //UI SETUP
   term_set_color(clrCyan, clrBlack); //set background and forground colours
-  gui_update();
 
   while (1)
   {
@@ -202,19 +179,23 @@ int main(void)
     if (input_ready == true)
     {
       // process inputs
+      uart_puts(UART_ID, "\r\n BUFFER RECIEVED");
       uint16_t val;
-      if (val >= 255) || (val <= 0) {
-        uart_puts(UART_ID, "Invalid Input");
-      }
-      else if (sscanf(buffer, "red %hu", &val) > 0) {
+      if (sscanf(buffer, "red %hu", &val) > 0) {
+          // Command was red
+          uart_puts(UART_ID, "\r\n red");
           //check if its legal 0<val<255
           pwm_set_gpio_level(RED_LED, val * val);
           red_level = val;
       } else if (sscanf(buffer, "green %hu", &val) > 0) {
+          // Command was green
+          uart_puts(UART_ID, "\n greeb \n");
           //check if its legal 0<val<255
           pwm_set_gpio_level(GREEN_LED, val * val);
           green_level = val;
       } else if (sscanf(buffer, "blue %hu", &val) > 0) {
+          // Command was blue
+          uart_puts(UART_ID, "\r\n blue");
           //check if its legal 0<val<255
           pwm_set_gpio_level(BLUE_LED, val * val);
           blue_level = val;
@@ -228,11 +209,68 @@ int main(void)
       i = 0;
       input_ready = false;
 
-
-      //update GUI
-      gui_update();
+      //update UI
+      //UI CODE
+      term_cls();
+      char colour_title_string[100];
+      char red_status_string[100];
+      char green_status_string[100];
+      char blue_status_string[100];
+      sprintf(colour_title_string, "COLOURS: ");
+      sprintf(red_status_string, "Red: %hu ", red_level);
+      sprintf(green_status_string, "Green: %hu", green_level);
+      sprintf(blue_status_string, "Blue: ", blue_level);
       
-            
+
+
+      
+      int width = 60;  // Width of the rectangle
+      int height = 7;  // Height of the rectangle
+
+      // Clear the terminal
+      term_cls();
+
+      // Set the text color to teal and the background color to black
+      uart_puts(UART_ID, red_level);
+      uart_puts(UART_ID, blue_level);
+      uart_puts(UART_ID, green_level);
+
+
+
+
+      for (int y_cnt = 1; y_cnt <= height; y_cnt++) {
+          for (int x_cnt = 1; x_cnt <= width; x_cnt++) {
+              // Print a '#' character for the border
+              if (y_cnt == 1 || y_cnt == height || y_cnt == 1 || y_cnt == width) {
+                  term_set_color(clrCyan, clrCyan);
+                  uart_puts(UART_ID, ' ');
+                  term_set_color(clrWhite, clrBlack);
+              }
+              else if (y_cnt == 2 && x_cnt ==2){
+                uart_puts(UART_ID, colour_title_string);
+                x_cnt += strlen(colour_title_string);
+                }
+              else if (y_cnt == 3 && x_cnt ==2){
+                uart_puts(UART_ID, red_status_string);
+                x_cnt += strlen(red_status_string);
+                }
+              else if (y_cnt == 4 && x_cnt ==2){
+                uart_puts(UART_ID, green_status_string);
+                x_cnt += strlen(green_status_string);
+                }
+              else if (y_cnt == 5 && x_cnt ==2){
+                uart_puts(UART_ID, blue_status_string);
+                x_cnt += strlen(blue_status_string);
+                }
+              // Print a space for the hollow interior
+              else {
+                  putchar(' ');
+              }
+          }
+          putchar('\n');  // Move to the next row
+      }
+
+      
     }
 
 }
