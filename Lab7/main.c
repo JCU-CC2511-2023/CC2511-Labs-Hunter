@@ -93,15 +93,14 @@ void on_uart_rx()
           //uart_puts(UART_ID, "\n backspace recieved \n");
           i--; // decrement index (clearing shouldnt be nessesary)
           buffer[i] = '\0';
-        }
-        else {
-          //uart_puts(UART_ID, "\n illegal backspace \n");
+          uart_putc(UART_ID, '\177');
         }
         break;
       default: // normal character recieved
 
         buffer[i] = ch; // save the character
         i++;            // increment the index
+        uart_putc(UART_ID, ch);
         break;
       }
 
@@ -203,10 +202,10 @@ int main(void)
     {
       // process inputs
       uint16_t val;
-      if ((val >= 255) || (val <= 0)) {
-        uart_puts(UART_ID, "Invalid Input");
-      }
-      else if (sscanf(buffer, "red %hu", &val) > 0) {
+      //if ((val >= 255) || (val <= 0)) {
+      //  uart_puts(UART_ID, "Invalid Input");
+      //}
+      if (sscanf(buffer, "red %hu", &val) > 0) {
           //check if its legal 0<val<255
           pwm_set_gpio_level(RED_LED, val * val);
           red_level = val;
