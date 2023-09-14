@@ -203,7 +203,7 @@ int main(void)
     {
       // process inputs
       uint16_t val;
-      if (val >= 255) || (val <= 0) {
+      if ((val >= 255) || (val <= 0)) {
         uart_puts(UART_ID, "Invalid Input");
       }
       else if (sscanf(buffer, "red %hu", &val) > 0) {
@@ -228,11 +228,9 @@ int main(void)
       i = 0;
       input_ready = false;
 
-
       //update GUI
       gui_update();
-      
-            
+       
     }
 
 }
