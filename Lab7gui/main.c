@@ -29,10 +29,9 @@
 
 // define global variables
 volatile char buffer[100]; // this has probably got to change
-volatile char save[100]; // temporary variable which buffer will offload to
+volatile char save[100];   // temporary variable which buffer will offload to
 volatile unsigned int i = 0;
 volatile bool input_ready = false;
-
 
 // put this in the LED AIO INIT code
 int red_level = 0;
@@ -54,21 +53,21 @@ void aio_init_rgb_pwm()
   gpio_set_dir(RED_LED, true);               // set direction to recieve input
   gpio_set_function(RED_LED, GPIO_FUNC_PWM); // set function to PWM
   uint Rslice_num = pwm_gpio_to_slice_num(RED_LED);
-  pwm_set_enabled(Rslice_num, true);    // enable PWM
+  pwm_set_enabled(Rslice_num, true);      // enable PWM
   pwm_set_gpio_level(RED_LED, red_level); // assign initial PWM value
 
   gpio_init(GREEN_LED);
   gpio_set_dir(GREEN_LED, true);               // set direction to recieve input
   gpio_set_function(GREEN_LED, GPIO_FUNC_PWM); // set function to PWM
   uint Gslice_num = pwm_gpio_to_slice_num(GREEN_LED);
-  pwm_set_enabled(Gslice_num, true);      // enable PWM
+  pwm_set_enabled(Gslice_num, true);          // enable PWM
   pwm_set_gpio_level(GREEN_LED, green_level); // assign initial PWM value
 
   gpio_init(BLUE_LED);
   gpio_set_dir(BLUE_LED, true);               // set direction to recieve input
   gpio_set_function(BLUE_LED, GPIO_FUNC_PWM); // set function to PWM
   uint Bslice_num = pwm_gpio_to_slice_num(BLUE_LED);
-  pwm_set_enabled(Bslice_num, true);     // enable PWM
+  pwm_set_enabled(Bslice_num, true);        // enable PWM
   pwm_set_gpio_level(BLUE_LED, blue_level); // assign initial PWM value
 }
 
@@ -83,26 +82,24 @@ void on_uart_rx()
       switch (ch)
       {
       case 13: // enter
-        //uart_puts(UART_ID, "\n enter recieved \n");
+        // uart_puts(UART_ID, "\n enter recieved \n");
         buffer[i] = '\0'; // add a trailing null!
         input_ready = true;
         break;
       case 127: // backspace (CHECK THAT YOU DONT BACKSPACE WHILE INDEX IS 0)
         if (i != 0)
         {
-          //uart_puts(UART_ID, "\n backspace recieved \n");
+          // uart_puts(UART_ID, "\n backspace recieved \n");
           i--; // decrement index (clearing shouldnt be nessesary)
           buffer[i] = '\0';
-        }
-        else {
-          //uart_puts(UART_ID, "\n illegal backspace \n");
+          uart_putc(UART_ID, '\177');
         }
         break;
       default: // normal character recieved
 
         buffer[i] = ch; // save the character
         i++;            // increment the index
-        uart_puts(UART_ID, ch);
+        uart_putc(UART_ID, ch);
         break;
       }
 
@@ -111,7 +108,7 @@ void on_uart_rx()
 
       term_erase_line();
     }
-    
+
     chars_rxed++; // characters read variable, kinda useless
   }
 }
@@ -160,7 +157,136 @@ void aio_init_uart()
   // OK, all set up.
   // Lets send a basic string out, and then run a loop and wait for RX interrupts
   // The handler will count them, but also reflect the incoming data back with a slight change!
-  //uart_puts(UART_ID, "\nHello, uart interrupts\n");
+  // uart_puts(UART_ID, "\nHello, uart interrupts\n");
+}
+
+void gui_update()
+{
+  // UI CODE
+  term_cls();
+  char colour_title_string[100];
+  char red_status_string[100];
+  char green_status_string[100];
+  char blue_status_string[100];
+
+  char tutorial_title_string[100];
+  char red_info_string[100];
+  char green_info_string[100];
+  char blue_info_string[100];
+  sprintf(colour_title_string, "+------[COLOURS]------+");
+  sprintf(red_status_string, "Red: %hu ", red_level);
+  sprintf(green_status_string, "Green: %hu", green_level);
+  sprintf(blue_status_string, "Blue: %hu", blue_level);
+
+  sprintf(tutorial_title_string, "+------[HOW TO USE]------+");
+  sprintf(red_info_string, ">> type: red n");
+  sprintf(green_info_string, ">> type: green n");
+  sprintf(blue_info_string, ">> type: blue n");
+
+  //width is equal to the width of each boxes header
+  int width_box1 = strlen(colour_title_string); 
+  int width_box2 = strlen(tutorial_title_string);
+
+  // Height of both rectangles are equal
+  int height = 7;                  
+
+  // Clear the terminal
+  term_cls();
+  term_move_to(0, 0);
+
+  // Output to terminal
+  term_set_color(clrWhite, clrBlack);
+  for (int y_cnt = 1; y_cnt <= height; y_cnt++)
+  {
+    for (int x_cnt = 1; x_cnt <= width_box1; x_cnt++)
+    {
+      // Print an empty but coloured character for the border
+      if (y_cnt == 1 || y_cnt == height || x_cnt == 1 || x_cnt == width_box1)
+      {
+        if (y_cnt == 1 && x_cnt == 1)
+        {
+          term_set_color(clrBlack, clrCyan);
+          uart_puts(UART_ID, colour_title_string);
+          term_move_to(width_box1, y_cnt);
+          x_cnt = width_box1;
+        }
+        else
+        {
+          term_move_to(x_cnt, y_cnt);
+          term_set_color(clrCyan, clrCyan);
+          uart_putc(UART_ID, ' ');
+          term_set_color(clrWhite, clrBlack);
+        }
+      }
+      else if (y_cnt == 3 && x_cnt == 3)
+      {
+        term_move_to(x_cnt, y_cnt);
+        uart_puts(UART_ID, red_status_string);
+        x_cnt == width_box1;
+        term_move_to(width_box1, y_cnt);
+      }
+      else if (y_cnt == 4 && x_cnt == 3)
+      {
+        term_move_to(x_cnt, y_cnt);
+        uart_puts(UART_ID, green_status_string);
+        x_cnt == width_box1;
+        term_move_to(width_box1, y_cnt);
+      }
+      else if (y_cnt == 5 && x_cnt == 3)
+      {
+        term_move_to(x_cnt, y_cnt);
+        uart_puts(UART_ID, blue_status_string);
+        x_cnt == width_box1;
+        term_move_to(width_box1, y_cnt);
+      }
+    }
+    
+    for (int x_cnt = 1; x_cnt <= width_box2; x_cnt++)
+    {
+      // Print an empty but coloured character for the border
+      if (y_cnt == 1 || y_cnt == height || x_cnt == 1 || x_cnt == width_box2)
+      {
+        if (y_cnt == 1 && x_cnt == 1)
+        {
+          term_move_to(x_cnt + width_box1 + 1, y_cnt);
+          term_set_color(clrBlack, clrCyan);
+          uart_puts(UART_ID, tutorial_title_string);
+          term_move_to(width_box1 + width_box2 + 1, y_cnt);
+          x_cnt = width_box2;
+        }
+        else
+        {
+          term_move_to(x_cnt + width_box1 + 1, y_cnt);
+          term_set_color(clrCyan, clrCyan);
+          uart_putc(UART_ID, ' ');
+          term_set_color(clrWhite, clrBlack);
+        }
+      }
+      else if (y_cnt == 3 && x_cnt == 3)
+      {
+        term_move_to(x_cnt + width_box1 + 1, y_cnt);
+        uart_puts(UART_ID, red_info_string);
+        x_cnt == width_box2;
+        term_move_to(width_box1 + width_box2 + 1, y_cnt);
+      }
+      else if (y_cnt == 4 && x_cnt == 3)
+      {
+        term_move_to(x_cnt + width_box1 + 1, y_cnt);
+        uart_puts(UART_ID, green_info_string);
+        x_cnt == width_box2;
+        term_move_to(width_box1 + width_box2 + 1, y_cnt);
+      }
+      else if (y_cnt == 5 && x_cnt == 3)
+      {
+        term_move_to(x_cnt + width_box1 + 1, y_cnt);
+        uart_puts(UART_ID, blue_info_string);
+        x_cnt == width_box2;
+        term_move_to(width_box1 + width_box2 + 1, y_cnt);
+      }
+    }
+    
+    putchar('\n'); // Move to the next row
+  }
 }
 
 int main(void)
@@ -169,113 +295,50 @@ int main(void)
   aio_init_uart();
   aio_init_rgb_pwm();
 
-  //UI SETUP
-  term_set_color(clrCyan, clrBlack); //set background and forground colours
+  // UI SETUP
+  term_set_color(clrCyan, clrBlack); // set background and forground colours
+  gui_update();
 
   while (1)
   {
-    tight_loop_contents();//so the cpu can do other stuff
-    //INTERRUPT HANDLING CODE
+    tight_loop_contents(); // so the cpu can do other stuff
+    // INTERRUPT HANDLING CODE
     if (input_ready == true)
     {
       // process inputs
-      uart_puts(UART_ID, "\r\n BUFFER RECIEVED");
       uint16_t val;
-      if (sscanf(buffer, "red %hu", &val) > 0) {
-          // Command was red
-          uart_puts(UART_ID, "\r\n red");
-          //check if its legal 0<val<255
-          pwm_set_gpio_level(RED_LED, val * val);
-          red_level = val;
-      } else if (sscanf(buffer, "green %hu", &val) > 0) {
-          // Command was green
-          uart_puts(UART_ID, "\n greeb \n");
-          //check if its legal 0<val<255
-          pwm_set_gpio_level(GREEN_LED, val * val);
-          green_level = val;
-      } else if (sscanf(buffer, "blue %hu", &val) > 0) {
-          // Command was blue
-          uart_puts(UART_ID, "\r\n blue");
-          //check if its legal 0<val<255
-          pwm_set_gpio_level(BLUE_LED, val * val);
-          blue_level = val;
+      // if ((val >= 255) || (val <= 0)) {
+      //   uart_puts(UART_ID, "Invalid Input");
+      // }
+      if (sscanf(buffer, "red %hu", &val) > 0)
+      {
+        // check if its legal 0<val<255
+        pwm_set_gpio_level(RED_LED, val * val);
+        red_level = val;
+      }
+      else if (sscanf(buffer, "green %hu", &val) > 0)
+      {
+        // check if its legal 0<val<255
+        pwm_set_gpio_level(GREEN_LED, val * val);
+        green_level = val;
+      }
+      else if (sscanf(buffer, "blue %hu", &val) > 0)
+      {
+        // check if its legal 0<val<255
+        pwm_set_gpio_level(BLUE_LED, val * val);
+        blue_level = val;
       }
 
-      //clear buffer
-      for (size_t x = 0; x < i; x++) 
+      // clear buffer
+      for (size_t x = 0; x < i; x++)
       {
         buffer[x] = '\0';
       }
       i = 0;
       input_ready = false;
 
-      //update UI
-      //UI CODE
-      term_cls();
-      char colour_title_string[100];
-      char red_status_string[100];
-      char green_status_string[100];
-      char blue_status_string[100];
-      sprintf(colour_title_string, "COLOURS: ");
-      sprintf(red_status_string, "Red: %hu ", red_level);
-      sprintf(green_status_string, "Green: %hu", green_level);
-      sprintf(blue_status_string, "Blue: ", blue_level);
-      
-
-
-      
-      int width = 60;  // Width of the rectangle
-      int height = 7;  // Height of the rectangle
-
-      // Clear the terminal
-      term_cls();
-
-      // Set the text color to teal and the background color to black
-      uart_puts(UART_ID, red_level);
-      uart_puts(UART_ID, blue_level);
-      uart_puts(UART_ID, green_level);
-
-
-
-
-      for (int y_cnt = 1; y_cnt <= height; y_cnt++) {
-          for (int x_cnt = 1; x_cnt <= width; x_cnt++) {
-              // Print a '#' character for the border
-              if (y_cnt == 1 || y_cnt == height || y_cnt == 1 || y_cnt == width) {
-                  term_set_color(clrCyan, clrCyan);
-                  uart_puts(UART_ID, ' ');
-                  term_set_color(clrWhite, clrBlack);
-              }
-              else if (y_cnt == 2 && x_cnt ==2){
-                uart_puts(UART_ID, colour_title_string);
-                x_cnt += strlen(colour_title_string);
-                }
-              else if (y_cnt == 3 && x_cnt ==2){
-                uart_puts(UART_ID, red_status_string);
-                x_cnt += strlen(red_status_string);
-                }
-              else if (y_cnt == 4 && x_cnt ==2){
-                uart_puts(UART_ID, green_status_string);
-                x_cnt += strlen(green_status_string);
-                }
-              else if (y_cnt == 5 && x_cnt ==2){
-                uart_puts(UART_ID, blue_status_string);
-                x_cnt += strlen(blue_status_string);
-                }
-              // Print a space for the hollow interior
-              else {
-                  putchar(' ');
-              }
-          }
-          putchar('\n');  // Move to the next row
-      }
-
-      
+      // update GUI
+      gui_update();
     }
-
-}
-
-      
-    
-  
+  }
 }

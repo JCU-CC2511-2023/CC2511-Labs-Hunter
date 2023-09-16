@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 include(pico_sdk_import.cmake)
 
-set(projname "Lab7")
+set(projname "Lab7gui")
 
 project(${projname} C CXX ASM)
 set(CMAKE_C_STANDARD 11)
