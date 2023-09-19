@@ -174,46 +174,10 @@ bool val_is_valid(int val)
     return true;
   }
 }
-
-void gui_draw()
+/*! \brief Draws Box in terminal given input parameters*/
+void draw_boxes(height, box_buffer, width_box1, width_box2, colour_title_string, tutorial_title_string)
 {
-  // UI CODE
-  term_cls();
-  char colour_title_string[100];
-  char red_status_string[100];
-  char green_status_string[100];
-  char blue_status_string[100];
 
-  char tutorial_title_string[100];
-  char red_info_string[100];
-  char green_info_string[100];
-  char blue_info_string[100];
-  sprintf(colour_title_string, "+------[COLOURS]------+");
-  sprintf(red_status_string, "Red: %hu    ", red_level);
-  sprintf(green_status_string, "Green: %hu    ", green_level);
-  sprintf(blue_status_string, "Blue: %hu    ", blue_level);
-
-  sprintf(tutorial_title_string, "+------[HOW TO USE]------+");
-  sprintf(red_info_string, ">> type: red n");
-  sprintf(green_info_string, ">> type: green n");
-  sprintf(blue_info_string, ">> type: blue n");
-
-  // width is equal to the width of each boxes header
-  int width_box1 = strlen(colour_title_string);
-  int width_box2 = strlen(tutorial_title_string);
-  int box_buffer = 3;
-
-  // Height of both rectangles are equal
-  int height = 7;
-
-  // Clear the terminal
-  term_cls();
-  term_move_to(0, 0);
-
-  // Output to terminal
-
-  // Draw Boxes
-  term_set_color(clrWhite, clrBlack);
   for (int y_cnt = 1; y_cnt <= height; y_cnt++)
   {
     for (int x_cnt = 1; x_cnt <= width_box1; x_cnt++)
@@ -261,9 +225,50 @@ void gui_draw()
         }
       }
     }
-
-    putchar('\n'); // Move to the next row
   }
+}
+
+void gui_draw()
+{
+  // UI CODE
+  term_cls();
+  char colour_title_string[100];
+  char red_status_string[100];
+  char green_status_string[100];
+  char blue_status_string[100];
+
+  char tutorial_title_string[100];
+  char red_info_string[100];
+  char green_info_string[100];
+  char blue_info_string[100];
+  sprintf(colour_title_string, "+------[COLOURS]------+");
+  sprintf(red_status_string, "Red: %hu    ", red_level);
+  sprintf(green_status_string, "Green: %hu    ", green_level);
+  sprintf(blue_status_string, "Blue: %hu    ", blue_level);
+
+  sprintf(tutorial_title_string, "+------[HOW TO USE]------+");
+  sprintf(red_info_string, ">> type: red n");
+  sprintf(green_info_string, ">> type: green n");
+  sprintf(blue_info_string, ">> type: blue n");
+
+  int box_buffer = 3;
+
+  // Height of both rectangles are equal
+  int height = 7;
+
+  int width_box1 = strlen(colour_title_string);
+  int width_box2 = strlen(tutorial_title_string);
+
+  // Clear the terminal
+  term_cls();
+  term_move_to(0, 0);
+
+  // Output to terminal
+
+  // draw Boxes
+  draw_boxes(height, box_buffer, width_box1, width_box2, colour_title_string, tutorial_title_string);
+
+  // populate contents of the boxes
   term_set_color(clrWhite, clrBlack);
 
   term_move_to(3, 3);
