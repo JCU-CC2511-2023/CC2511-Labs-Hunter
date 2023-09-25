@@ -1,1 +1,1 @@
-python %PICO_SDK_PATH%\..\ppgen\ppgen.py Lab8 -l pwm -l uart -d picoprobe
+python %PICO_SDK_PATH%\..\ppgen\ppgen.py Lab9 -l pwm -l uart -d picoprobe

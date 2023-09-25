@@ -44,9 +44,6 @@ static int chars_rxed = 0;
 /*! \brief All in one function which enables LEDS and PWM*/
 void aio_init_rgb_pwm()
 {
-  /**************************************************************
-   * All in one function which enables LEDS and PWM
-   * ***********************************************************/
 
   // LED PIN PWM INITIALISATION CODE
   gpio_init(RED_LED);
