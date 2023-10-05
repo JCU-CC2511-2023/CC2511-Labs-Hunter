@@ -64,7 +64,7 @@ int main(void)
       pwm_set_gpio_level(RED_LED, (int)red_value);
       pwm_set_gpio_level(GREEN_LED, (int)green_value);
       pwm_set_gpio_level(BLUE_LED, (int)blue_value);
-
+      printf("hello");
       sleep_ms(2); // Delay to observe changes
     }   
   }

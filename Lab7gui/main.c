@@ -27,9 +27,8 @@
 #define STOP_BITS 1
 #define PARITY UART_PARITY_NONE
 
-// define global variables
+// define buffer variables for UART
 volatile char buffer[100]; // this has probably got to change
-volatile char save[100];   // temporary variable which buffer will offload to
 volatile unsigned int i = 0;
 volatile bool input_ready = false;
 
@@ -37,9 +36,6 @@ volatile bool input_ready = false;
 int red_level = 0;
 int green_level = 0;
 int blue_level = 0;
-
-// RX interrupt handler
-static int chars_rxed = 0;
 
 /*! \brief All in one function which enables LEDS and PWM*/
 void aio_init_rgb_pwm()
@@ -106,7 +102,6 @@ void on_uart_rx()
       term_erase_line();
     }
 
-    chars_rxed++; // characters read variable, kinda useless
   }
 }
 
