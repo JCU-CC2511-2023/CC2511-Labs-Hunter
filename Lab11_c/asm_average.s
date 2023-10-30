@@ -34,36 +34,31 @@ asm_average:
 
     movs r3, #0 // sum begins at 0
     movs r4, #0 // overflow register also begins at 0
-    movs r5, r2 //index counter begins at 1<<Q, and decrements from there
+   
 
     sum_loop:
-        subs r5, #1 //decrement the index
-        ldr r6, [r1, r5] // load to r6 number[i] (where i is index at reg r5 and array address is r1)
+        ldr r6, [r1]      // load value from array
+        adds r1, r1, #4   // increment address of the array
         adds r3, r6 // at to the sum, the new number
-        
-        bcs carry
-
-        
-        cmp r5, #0  //check if index is 0
-        bne sum_loop // branch if !=
+        bcs carry // if carry set, increment overflow
+        decrement_counter:
+            subs r2, #1 // decrement counter
+            cmp r2, #0  // check if counter is 0
+            bne sum_loop // branch if !=
+            b end
     carry:
         adds r4, #1 // add one to the overflow register, 
-        movs r3, #0 // sum re-begins at 0
+        //movs r3, #0 // sum re-begins at 0 for the normal register
+        b decrement_counter// 
 
-        // address duplicated code 
-        subs r5, #1 //decrement the index
-        cmp r5, #0  //check if index is 0
-        bne sum_loop // branch if !=
+    end:
+        movs r5, #32 // r5=32
+        subs r5, r5, r0  // store to r5, (32-Q)
+        lsls r4, r5 // store to r4, r4<<(32-Q), (multiplied by 2^Q)
+        lsrs r3, r0 // store to r3, r3>>(Q), (divided by 2^Q)
+        movs r0, r4     // move r4 to r0
+        orrs r0, r0, r3 // r0 = r0 | r3
 
-    subs r5, 32, r0 // store to r5, (32-Q)
-    lsls r4, r5 // store to r4, r4<<(32-Q), (multiplied by 2^Q)
-    lsrs r3, r0 // store to r3, r3>>(Q), (divided by 2^Q)
-    orrs r0, r4, r3 // add these registers together to create final result
-    
-    
-    
-    
-    /* TODO - put the result into r0 */
-
+        //result must be put into r0
     pop {r4-r7, pc}
 
