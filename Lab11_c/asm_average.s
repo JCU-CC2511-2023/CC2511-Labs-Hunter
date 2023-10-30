@@ -34,7 +34,6 @@ asm_average:
 
     movs r3, #0 // sum begins at 0
     movs r4, #0 // overflow register also begins at 0
-   
 
     sum_loop:
         ldr r6, [r1]      // load value from array
@@ -48,9 +47,7 @@ asm_average:
             b end
     carry:
         adds r4, #1 // add one to the overflow register, 
-        //movs r3, #0 // sum re-begins at 0 for the normal register
         b decrement_counter// 
-
     end:
         movs r5, #32 // r5=32
         subs r5, r5, r0  // store to r5, (32-Q)
