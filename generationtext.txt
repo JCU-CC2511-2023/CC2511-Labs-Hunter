@@ -1,1 +1,1 @@
-python %PICO_SDK_PATH%\..\ppgen\ppgen.py Assignment1_picoprobe -l pwm -l uart -d picoprobe
+python %PICO_SDK_PATH%\..\ppgen\ppgen.py Krugerilingworth_Hunter_Exam -l pwm -l uart -l adc -d picoprobe
