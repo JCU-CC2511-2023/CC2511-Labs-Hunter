@@ -1,6 +1,6 @@
 # CC2511 Labs
 ##  Embedded C Programming using Raspberry Pi Pico
-filenames are hyperlinks to the lab sheet with my notes on them
+filenames are hyperlinks to the lab sheet with my notes and highlighting
 
 ![Lab Board](Documentation/lab_board.jpg)
 
@@ -8,7 +8,10 @@ filenames are hyperlinks to the lab sheet with my notes on them
 - Lab 3 - Toggling Lab board's RGB LED through the terminal [`Lab03.pdf`](Documentation/Lab03.pdf)
 - Lab 4 - Lab 2 redone without any functions from the SDK [`Lab04.pdf`](Documentation/Lab04.pdf)
 - Lab 5 - Using PWM to dim Lab board's RGB LED through the terminal [`Lab05.pdf`](Documentation/Lab05.pdf)
-- Lab 5 sinewave - Self imposed extension to create a rainbow effect using PWM and phase shifted sine waves like so: <iframe src="https://www.desmos.com/calculator/g9djlcch9y?embed" width="500" height="500" style="border: 1px solid #ccc" frameborder=0></iframe>
+- Lab 5 sinewave - Self imposed extension to create a rainbow effect using PWM and phase shifted sine waves like so:
+  <a href="https://www.desmos.com/calculator/1ixziug23u">
+      <img src="Documentation/sinewave.jpg" alt="Desmos Calculator" width="500"/>
+  </a>
 - Lab 6 - Assignment related work
 - Lab 7 - Using UART to create a simple interface to set the levels of the Lab board's RGB LED [`Lab07.pdf`](Documentation/Lab07.pdf)
 - Lab 7gui - A nicer looking GUI that was much more painful to implement ![GUI Demo](Documentation/guidemo.gif)
