@@ -5,6 +5,7 @@
  * extention topic to mimic the following graph:
  * https://www.desmos.com/calculator/mhtmuoljgf 
  * ***********************************************************/
+
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include <stdbool.h>
@@ -46,25 +47,24 @@ int main(void)
   pwm_set_gpio_level(BLUE_LED, 255); // assign initial PWM value
 
   //create variables for graph function
-  double PI = 3.1416;
-  double Amp = PI/255;
-  double R_phase = 0;
-  double G_phase = PI/3;
-  double B_phase = (2*PI)/3;
+  double pi = 3.1416;
+  double amplitude = pi/255;
+  double R_phase_shift = 0;
+  double G_phase_shift = pi/3;
+  double B_phase_shift = (2*PI)/3;
 
   while (true)
   {
     // Adjust the duty cycle of the green LED to create blinking effect
     for (int duty_cycle = 0; duty_cycle <= 255; duty_cycle += 1)
     {
-      double red_value = pow(sin(Amp * duty_cycle + R_phase), 2) * 255.0;
-      double green_value = pow(sin(Amp * duty_cycle + G_phase), 2) * 255.0;
-      double blue_value = pow(sin(Amp * duty_cycle + B_phase), 2) * 255.0;
+      double red_value = pow(sin(amplitude * duty_cycle + R_phase_shift), 2) * 255.0;
+      double green_value = pow(sin(amplitude * duty_cycle + G_phase_shift), 2) * 255.0;
+      double blue_value = pow(sin(amplitude * duty_cycle + B_phase_shift), 2) * 255.0;
 
       pwm_set_gpio_level(RED_LED, (int)red_value);
       pwm_set_gpio_level(GREEN_LED, (int)green_value);
       pwm_set_gpio_level(BLUE_LED, (int)blue_value);
-      printf("hello");
       sleep_ms(2); // Delay to observe changes
     }   
   }

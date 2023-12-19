@@ -78,7 +78,7 @@ int main(void)
   adc_gpio_init(LDR_PIN);
   adc_select_input(0);
 
-  int light_lvl_gain = 500;        // give arbitrary gain so that changes are easier to detect
+  int light_lvl_gain = 500; // give arbitrary gain so that changes are easier to detect
   volatile int light_lvl_prev = constant * adc_read() * (light_lvl_gain / 3.3); // store previous reading
   volatile bool logic_high = false;
   int time_increment_ms = 4; //time increment in msiliseconds
@@ -89,7 +89,6 @@ int main(void)
     uint16_t adc = adc_read();
     uint16_t light_lvl = constant * adc * (light_lvl_gain / 3.3);
     int16_t delta_light_lvl = light_lvl - light_lvl_prev;
-    //printf("ADC: %u _____ Light Level: %u _____ Delta: %d \r\n ", adc, light_lvl, delta_light_lvl);
 
     if (delta_light_lvl >= light_level_threshold && logic_high == false)
     {

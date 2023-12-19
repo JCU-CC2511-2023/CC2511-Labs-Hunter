@@ -8,11 +8,11 @@
 
 // CONSTANT AND DATA TYPE DEFINITION
 typedef unsigned long uint32_t;
-#define CONTENT_OF(addr) (*(volatile uint32_t *)addr)
+#define CONTENT_OF(addr) (*(volatile uint32_t *)addr) // create a pointer to the input address
 #define LED_PIN 25
 
 // PAD CONTROL REGISTER DEFINITION
-#define PAD_BASE 0x4001c000////////////
+#define PAD_BASE 0x4001c000
 #define PADS_BANK0_GPIO25 (PAD_BASE + 0x68)
 
 // FUNCTION ALLOCATION REGISTER DEFINITION
@@ -20,7 +20,7 @@ typedef unsigned long uint32_t;
 #define GPIO25_CTRL (0x40014000 + 0x0cc)
 
 // DATA DIRECTION REGISTER DEFINITION
-#define SIO_BASE 0xd0000000//////////
+#define SIO_BASE 0xd0000000
 #define REG_GPIO_OE_SET (SIO_BASE + 0x024)
 
 // LED TOGGLE REGISTER DEFINITION
@@ -48,7 +48,6 @@ int main(void)
 
   while (true)
   {
-
     CONTENT_OF(GPIO_OUT_SET) = CONTENT_OF(GPIO_OUT_SET) | (0x1 << LED_PIN);
 
     for (uint32_t i = 0; i < 8000000; i++)

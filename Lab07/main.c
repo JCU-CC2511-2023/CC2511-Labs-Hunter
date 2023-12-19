@@ -2,8 +2,6 @@
  * main.c
  * rev 1.0 05-Sep-2023 hkrug
  * Lab7
- * extention topic to mimic the following graph:
- * https://www.desmos.com/calculator/mhtmuoljgf
  * ***********************************************************/
 #include <stdio.h>
 #include "pico/stdlib.h"
@@ -103,10 +101,6 @@ void on_uart_rx()
         uart_putc(UART_ID, ch);
         break;
       }
-
-      // buffer overflow correction logic
-      // TODO echo the char back to the user
-
       term_erase_line();
     }
     
@@ -232,9 +226,5 @@ int main(void)
        
     }
 
-}
-
-      
-    
-  
+} 
 }

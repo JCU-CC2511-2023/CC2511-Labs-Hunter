@@ -21,6 +21,9 @@
 #define CTRL_PDE 0x4 // Bit 2 REG_PAD_CONTROL_GPIO15 register pg300 rp2040 datasheet
 #define CTRL_PUE 0x8 // Bit 3 REG_PAD_CONTROL_GPIO15 register pg300 rp2040 datasheet
 
+// INCREMENT CONSTANT
+#define LIGHT_INCREMENT 17
+
 int main(void)
 {
   // ENABLE USE OF SDK
@@ -105,33 +108,33 @@ int main(void)
       // PART 2 CODE
       if (ch == 'r')
       {
-        if ((red_level - 17) >= 0)
+        if ((red_level - LIGHT_INCREMENT) >= 0)
         {
-          red_level -= 17;
+          red_level -= LIGHT_INCREMENT;
           printf("Red decrease to %d \r\n", red_level);
         }
       }
       if (ch == 'R')
       {
-        if ((red_level + 17) <= 255)
+        if ((red_level + LIGHT_INCREMENT) <= 255)
         {
-          red_level += 17;
+          red_level += LIGHT_INCREMENT;
           printf("Red increase to %d \r\n", red_level);
         }
       }
       if (ch == 'g')
       {
-        if ((green_level - 17) >= 0)
+        if ((green_level - LIGHT_INCREMENT) >= 0)
         {
-          green_level -= 17;
+          green_level -= LIGHT_INCREMENT;
           printf("Green decrease to %d \r\n", green_level);
         }
       }
       if (ch == 'G')
       {
-        if ((green_level + 17) <= 255)
+        if ((green_level + LIGHT_INCREMENT) <= 255)
         {
-          green_level += 17;
+          green_level += LIGHT_INCREMENT;
           printf("Green increase to %d \r\n", green_level);
         }
       }

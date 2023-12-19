@@ -95,10 +95,6 @@ void on_uart_rx()
         uart_putc(UART_ID, ch);
         break;
       }
-
-      // buffer overflow correction logic
-      // TODO echo the char back to the user
-
       term_erase_line();
     }
 

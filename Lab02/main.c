@@ -10,7 +10,7 @@
 int main(void)
 {
     // Initialise the GPIO pin that controls the on-board LED 
-    const uint LED_PIN = PICO_DEFAULT_LED_PIN;
+    const uint LED_PIN = PICO_DEFAULT_LED_PIN; //onboard LED in the Pico itself
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
     // Loop for ever

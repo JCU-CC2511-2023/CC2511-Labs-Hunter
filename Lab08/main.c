@@ -14,9 +14,7 @@
 
 #define RED_LED 11
 #define GREEN_LED 12
-#define BLUE_LED 13
-
-// UART
+#define BLUE_LED 13 // UART
 #define UART_ID uart0
 #define BAUD_RATE 115200
 #define UART_TX_PIN 0 // We are using pins 0 and 1, but see the GPIO function select table in the

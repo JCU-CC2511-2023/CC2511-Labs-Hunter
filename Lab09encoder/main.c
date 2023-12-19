@@ -51,11 +51,7 @@ int main(void) {
     sleep_ms(51);
     update_LED(true);
     sleep_ms(51);
-    u_int8_t message = "balls";
+    u_int8_t message = "hello";
     printf("Message: %u", message);
   }
 }
-
-//detect a change in light input
-//delta_x 25% difference
-//delta_t = 0.5ms

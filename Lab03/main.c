@@ -14,7 +14,6 @@
 
 int main(void)
 {
-  // TODO - Initialise components and variables
   stdio_init_all();
 
   gpio_init(RED_LED);
@@ -27,7 +26,7 @@ int main(void)
   gpio_set_dir(BLUE_LED, true);
 
   while (true)
-  { // Repeated code here within the while statement
+  {
 
     int ch = getchar_timeout_us(0); // respond to user input by setting the GPIO pin high or low
     if (ch != PICO_ERROR_TIMEOUT)
